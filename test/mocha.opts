@@ -1,0 +1,4 @@
+--require ts-node/register
+--watch-extensions ts
+../dist/test/**/*.spec.js
+--timeout 50000
