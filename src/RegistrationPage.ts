@@ -1,4 +1,4 @@
-import { WebDriver, By, until } from 'selenium-webdriver';
+import { WebDriver, By, until, Key } from 'selenium-webdriver';
 
 class RegistrationPage {
     private driver: WebDriver;
@@ -14,16 +14,35 @@ class RegistrationPage {
     // Second Page Locators
     private companyNameInput = By.css('input[formcontrolname="name"]');
     private phoneNumberInput = By.css('input[formcontrolname="phoneNumber"]');
+    private submitButtonSecondPage = By.css('button[type="submit');
 
     constructor(driver: WebDriver) {
         this.driver = driver;
     }
 
-    // First Page Actions
+    async setFocusOnFirstInput() {
+        const firstInput = await this.driver.wait(until.elementLocated(this.firstNameInput), 10000);
+        await this.driver.wait(until.elementIsEnabled(firstInput), 10000); // Wait for element to be enabled
+        await this.driver.wait(until.elementIsVisible(firstInput), 10000); // Wait for element to be visible
+        await this.driver.executeScript("arguments[0].scrollIntoView(true);", firstInput);
+        await this.driver.executeScript("arguments[0].click();", firstInput);
+    }
+
+    async waitForSecondForm() {
+        const secondFormElement = By.css('input[formcontrolname="name"]');
+        await this.driver.wait(until.elementLocated(secondFormElement), 10000);
+        await this.driver.wait(until.elementIsVisible(await this.driver.findElement(secondFormElement)), 10000);
+    }
+
+    async tabThroughInputs() {
+        await this.driver.actions().sendKeys(Key.TAB).perform();
+    }
+
     async setInputValue(selector: By, value: string) {
+        await this.tabThroughInputs();
         const element = await this.driver.wait(until.elementLocated(selector), 10000);
-        await this.driver.executeScript("arguments[0].value = arguments[1];", element, value);
-    }    
+        await element.sendKeys(value);
+    }
 
     async enterFirstName(firstName: string) {
         await this.setInputValue(this.firstNameInput, firstName);
@@ -51,18 +70,22 @@ class RegistrationPage {
         await signUpButtonField.click();
     }
 
-    /*async waitForCompanyForm() {
+    async enterCompanyName(companyName: string) {
         const companyNameField = await this.driver.wait(until.elementLocated(this.companyNameInput), 10000);
         await this.driver.wait(until.elementIsVisible(companyNameField), 10000);
-    }*/
-
-    // Second Page Actions
-    async enterCompanyName(companyName: string) {
-        await this.setInputValue(this.companyNameInput, companyName);
+        await companyNameField.sendKeys(companyName);
     }
 
     async enterPhoneNumber(phoneNumber: string) {
-        await this.setInputValue(this.phoneNumberInput, phoneNumber);
+        const phoneNumberField = await this.driver.wait(until.elementLocated(this.phoneNumberInput), 10000);
+        await this.driver.wait(until.elementIsVisible(phoneNumberField), 10000);
+        await phoneNumberField.sendKeys(phoneNumber);
+    }
+
+    async clickSubmitButton() {
+        const submitBtn = await this.driver.wait(until.elementLocated(this.submitButtonSecondPage), 10000);
+        await this.driver.wait(until.elementIsVisible(submitBtn), 10000);
+        await submitBtn.click();
     }
 }
 

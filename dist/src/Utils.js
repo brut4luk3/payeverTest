@@ -13,15 +13,10 @@ class Utils {
         return result;
     }
     static randomEmail() {
-        return `test_${this.randomString(5)}@example.com`;
+        return `test_${this.randomString(5)}@gmail.com`;
     }
     static generateStrongPassword() {
-        const length = 8;
-        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-        let retVal = "";
-        for (let i = 0, n = charset.length; i < length; ++i) {
-            retVal += charset.charAt(Math.floor(Math.random() * n));
-        }
+        let retVal = "Alpha_3457";
         return retVal;
     }
 }

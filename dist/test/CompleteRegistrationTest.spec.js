@@ -12,24 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
 const RegistrationPage_1 = require("../src/RegistrationPage");
 const Utils_1 = require("../src/Utils");
-describe('Fashion Sign Up Test', function () {
+describe('Complete Registration Process', function () {
     this.timeout(30000);
     let driver;
-    beforeEach(function () {
+    let registrationPage;
+    before(function () {
         return __awaiter(this, void 0, void 0, function* () {
             driver = yield new selenium_webdriver_1.Builder().forBrowser('chrome').build();
+            registrationPage = new RegistrationPage_1.RegistrationPage(driver);
         });
     });
-    afterEach(function () {
+    after(function () {
         return __awaiter(this, void 0, void 0, function* () {
             yield driver.quit();
         });
     });
-    it('Fashion Sign Up and Company Information', function () {
+    it('Complete Registration with Company Information', function () {
         return __awaiter(this, void 0, void 0, function* () {
-            const registrationPage = new RegistrationPage_1.RegistrationPage(driver);
+            // Navigate to the first page and focus on the first input
             yield driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
-            // First Page Actions
+            yield registrationPage.setFocusOnFirstInput();
             const firstName = Utils_1.Utils.randomString(5);
             const lastName = Utils_1.Utils.randomString(5);
             const email = Utils_1.Utils.randomEmail();
@@ -40,22 +42,15 @@ describe('Fashion Sign Up Test', function () {
             yield registrationPage.enterPassword(password);
             yield registrationPage.enterConfirmPassword(password);
             yield registrationPage.clickSignUp();
-            /*
-            await registrationPage.waitForCompanyForm();
-    
-            // Second Page Actions
-            
+            yield registrationPage.waitForSecondForm();
+            // Fill in the second form
             const companyName = "TestCompany";
             const phoneNumber = "1234567890";
-    
-            await registrationPage.enterCompanyName(companyName);
-            await registrationPage.enterPhoneNumber(phoneNumber);
-            
-    
-            // That's just for testing purposes 'cause mr.Selenium is as wild as Joe Rogan's impersonation of a bear. Once in production, DELETE IT.
-            console.log(`Test completed with company: ${companyName}, phone: ${phoneNumber}`);
-            */
-            console.log(`Test registration successful with username: ${email} and password: ${password}`);
+            yield registrationPage.enterCompanyName(companyName);
+            yield registrationPage.enterPhoneNumber(phoneNumber);
+            // Click the submit button on the second page
+            yield registrationPage.clickSubmitButton();
+            console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
         });
     });
 });
