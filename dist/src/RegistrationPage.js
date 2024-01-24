@@ -64,12 +64,10 @@ class RegistrationPage {
             yield signUpButtonField.click();
         });
     }
-    waitForCompanyForm() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const companyNameField = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(companyNameField), 10000);
-        });
-    }
+    /*async waitForCompanyForm() {
+        const companyNameField = await this.driver.wait(until.elementLocated(this.companyNameInput), 10000);
+        await this.driver.wait(until.elementIsVisible(companyNameField), 10000);
+    }*/
     // Second Page Actions
     enterCompanyName(companyName) {
         return __awaiter(this, void 0, void 0, function* () {

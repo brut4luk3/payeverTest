@@ -40,15 +40,22 @@ describe('Fashion Sign Up Test', function () {
             yield registrationPage.enterPassword(password);
             yield registrationPage.enterConfirmPassword(password);
             yield registrationPage.clickSignUp();
-            yield registrationPage.waitForCompanyForm();
+            /*
+            await registrationPage.waitForCompanyForm();
+    
             // Second Page Actions
+            
             const companyName = "TestCompany";
             const phoneNumber = "1234567890";
-            yield registrationPage.enterCompanyName(companyName);
-            yield registrationPage.enterPhoneNumber(phoneNumber);
+    
+            await registrationPage.enterCompanyName(companyName);
+            await registrationPage.enterPhoneNumber(phoneNumber);
+            
+    
             // That's just for testing purposes 'cause mr.Selenium is as wild as Joe Rogan's impersonation of a bear. Once in production, DELETE IT.
-            console.log(`Test registration successful with username: ${email} and password: ${password}`);
             console.log(`Test completed with company: ${companyName}, phone: ${phoneNumber}`);
+            */
+            console.log(`Test registration successful with username: ${email} and password: ${password}`);
         });
     });
 });

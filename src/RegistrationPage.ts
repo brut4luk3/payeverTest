@@ -51,10 +51,10 @@ class RegistrationPage {
         await signUpButtonField.click();
     }
 
-    async waitForCompanyForm() {
+    /*async waitForCompanyForm() {
         const companyNameField = await this.driver.wait(until.elementLocated(this.companyNameInput), 10000);
         await this.driver.wait(until.elementIsVisible(companyNameField), 10000);
-    }
+    }*/
 
     // Second Page Actions
     async enterCompanyName(companyName: string) {

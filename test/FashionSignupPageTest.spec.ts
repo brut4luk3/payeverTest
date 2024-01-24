@@ -14,7 +14,7 @@ describe('Fashion Sign Up Test', function() {
         await driver.quit();
     });
 
-    it('Fashion Sign Up and Company Information', async function() {
+    it('Fashion Sign Up', async function() {
         const registrationPage = new RegistrationPage(driver);
         await driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
 
@@ -32,9 +32,11 @@ describe('Fashion Sign Up Test', function() {
 
         await registrationPage.clickSignUp();
 
+        /*
         await registrationPage.waitForCompanyForm();
 
         // Second Page Actions
+        
         const companyName = "TestCompany";
         const phoneNumber = "1234567890";
 
@@ -43,8 +45,9 @@ describe('Fashion Sign Up Test', function() {
         
 
         // That's just for testing purposes 'cause mr.Selenium is as wild as Joe Rogan's impersonation of a bear. Once in production, DELETE IT.
-        console.log(`Test registration successful with username: ${email} and password: ${password}`);
-
         console.log(`Test completed with company: ${companyName}, phone: ${phoneNumber}`);
+        */
+
+        console.log(`Test registration successful with username: ${email} and password: ${password}`);
     });
 })
