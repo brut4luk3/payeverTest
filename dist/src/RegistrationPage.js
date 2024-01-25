@@ -27,7 +27,7 @@ class RegistrationPage {
     }
     waitAndPressTab() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.driver.sleep(10000); // Espera de 5 segundos
+            yield this.driver.sleep(5000); // Espera de 5 segundos
             yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
         });
     }
@@ -91,10 +91,10 @@ class RegistrationPage {
     completeFirstPage(firstName, lastName, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             // Aguarde a visibilidade do primeiro campo antes de começar a interagir
-            const firstInput = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.firstNameInput), 20000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(firstInput), 20000);
+            const firstInput = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.firstNameInput), 10000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(firstInput), 10000);
             // Aguarde 10 segundos antes de começar a interação
-            yield this.driver.sleep(10000);
+            yield this.driver.sleep(5000);
             // Foca no primeiro input
             yield firstInput.click();
             // Preencha os campos da primeira página
@@ -110,9 +110,10 @@ class RegistrationPage {
     completeSecondPage(companyName, phoneNumber) {
         return __awaiter(this, void 0, void 0, function* () {
             // Aguarde a visibilidade do primeiro campo da segunda página antes de começar a interagir
-            yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 10000);
             yield this.waitAndPressTab(); // Aguarda 5 segundos e pressiona TAB
             yield this.enterCompanyName(companyName);
+            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
             yield this.enterPhoneNumber(phoneNumber);
             yield this.clickSubmitButton();
         });

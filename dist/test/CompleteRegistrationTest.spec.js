@@ -43,23 +43,16 @@ describe('Complete Registration Process', function () {
                 const lastName = Utils_1.Utils.randomString(5);
                 const email = Utils_1.Utils.randomEmail();
                 const password = Utils_1.Utils.generateStrongPassword();
-                // Preencher os campos do formulário
-                yield registrationPage.enterFirstName(firstName);
-                yield registrationPage.enterLastName(lastName);
-                yield registrationPage.enterEmail(email);
-                yield registrationPage.enterPassword(password);
-                yield registrationPage.enterConfirmPassword(password);
-                // Clicar no botão de inscrição
-                yield registrationPage.clickSignUp();
+                // Preencher os campos do formulário e clicar no botão de inscrição
+                yield registrationPage.completeFirstPage(firstName, lastName, email, password);
                 const companyName = "TestCompany";
                 const phoneNumber = "1234567890";
-                yield registrationPage.enterCompanyName(companyName);
-                yield registrationPage.enterPhoneNumber(phoneNumber);
-                yield registrationPage.clickSubmitButton();
+                // Preencher os campos do segundo formulário e clicar no botão de submissão
+                yield registrationPage.completeSecondPage(companyName, phoneNumber);
                 console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
             }
             catch (error) {
-                console.log(`Erro durante o teste: ${error}`);
+                console.log(`Error: ${error}`);
                 throw error;
             }
         });

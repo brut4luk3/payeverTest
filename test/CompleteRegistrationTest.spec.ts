@@ -35,28 +35,19 @@ describe('Complete Registration Process', function() {
             const email = Utils.randomEmail();
             const password = Utils.generateStrongPassword();
 
-            // Preencher os campos do formulário
-            await registrationPage.enterFirstName(firstName);
-            await registrationPage.enterLastName(lastName);
-            await registrationPage.enterEmail(email);
-            await registrationPage.enterPassword(password);
-            await registrationPage.enterConfirmPassword(password);
-
-            // Clicar no botão de inscrição
-            await registrationPage.clickSignUp();
+            // Preencher os campos do formulário e clicar no botão de inscrição
+            await registrationPage.completeFirstPage(firstName, lastName, email, password);
 
             const companyName = "TestCompany";
             const phoneNumber = "1234567890";
 
-            await registrationPage.enterCompanyName(companyName);
-            await registrationPage.enterPhoneNumber(phoneNumber);
-
-            await registrationPage.clickSubmitButton();
+            // Preencher os campos do segundo formulário e clicar no botão de submissão
+            await registrationPage.completeSecondPage(companyName, phoneNumber);
 
             console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
         
         } catch (error) {
-            console.log(`Erro durante o teste: ${error}`);
+            console.log(`Error: ${error}`);
             throw error;
         }
     });

@@ -19,7 +19,7 @@ class RegistrationPage {
     }
 
     async waitAndPressTab() {
-        await this.driver.sleep(10000); // Espera de 5 segundos
+        await this.driver.sleep(5000); // Espera de 5 segundos
         await this.driver.actions().sendKeys(Key.TAB).perform();
     }
 
@@ -72,11 +72,11 @@ class RegistrationPage {
 
     async completeFirstPage(firstName: string, lastName: string, email: string, password: string) {
         // Aguarde a visibilidade do primeiro campo antes de começar a interagir
-        const firstInput = await this.driver.wait(until.elementLocated(this.firstNameInput), 20000);
-        await this.driver.wait(until.elementIsVisible(firstInput), 20000);
+        const firstInput = await this.driver.wait(until.elementLocated(this.firstNameInput), 10000);
+        await this.driver.wait(until.elementIsVisible(firstInput), 10000);
     
         // Aguarde 10 segundos antes de começar a interação
-        await this.driver.sleep(10000);
+        await this.driver.sleep(5000);
     
         // Foca no primeiro input
         await firstInput.click();
@@ -94,9 +94,12 @@ class RegistrationPage {
 
     async completeSecondPage(companyName: string, phoneNumber: string) {
         // Aguarde a visibilidade do primeiro campo da segunda página antes de começar a interagir
-        await this.driver.wait(until.elementLocated(this.companyNameInput), 20000);
+        await this.driver.wait(until.elementLocated(this.companyNameInput), 10000);
         await this.waitAndPressTab(); // Aguarda 5 segundos e pressiona TAB
         await this.enterCompanyName(companyName);
+        
+        await this.driver.actions().sendKeys(Key.TAB).perform();
+        
         await this.enterPhoneNumber(phoneNumber);
         await this.clickSubmitButton();
     }
