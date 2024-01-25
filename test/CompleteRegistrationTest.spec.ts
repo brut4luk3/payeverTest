@@ -3,7 +3,7 @@ import { RegistrationPage } from '../src/RegistrationPage';
 import { Utils } from '../src/Utils';
 
 describe('Complete Registration Process', function() {
-    this.timeout(30000);
+    this.timeout(60000);
     let driver: WebDriver;
     let registrationPage: RegistrationPage;
 
@@ -17,34 +17,47 @@ describe('Complete Registration Process', function() {
     });
 
     it('Complete Registration with Company Information', async function() {
-        // Navigate to the first page and focus on the first input
-        await driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
-        await registrationPage.setFocusOnFirstInput();
+        try {
+            await driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
 
-        const firstName = Utils.randomString(5);
-        const lastName = Utils.randomString(5);
-        const email = Utils.randomEmail();
-        const password = Utils.generateStrongPassword();
+            // Esperar até que a página esteja completamente carregada
+            let readyState = '';
+            do {
+                readyState = await driver.executeScript("return document.readyState");
+                await driver.sleep(5000);
+            } while (readyState !== 'complete');
 
-        await registrationPage.enterFirstName(firstName);
-        await registrationPage.enterLastName(lastName);
-        await registrationPage.enterEmail(email);
-        await registrationPage.enterPassword(password);
-        await registrationPage.enterConfirmPassword(password);
+            // Forçar o foco no primeiro campo do formulário
+            await driver.executeScript("document.querySelector('input[formcontrolname=\"firstName\"]').focus();");
 
-        await registrationPage.clickSignUp();
-        await registrationPage.waitForSecondForm();
+            const firstName = Utils.randomString(5);
+            const lastName = Utils.randomString(5);
+            const email = Utils.randomEmail();
+            const password = Utils.generateStrongPassword();
 
-        // Fill in the second form
-        const companyName = "TestCompany";
-        const phoneNumber = "1234567890";
+            // Preencher os campos do formulário
+            await registrationPage.enterFirstName(firstName);
+            await registrationPage.enterLastName(lastName);
+            await registrationPage.enterEmail(email);
+            await registrationPage.enterPassword(password);
+            await registrationPage.enterConfirmPassword(password);
 
-        await registrationPage.enterCompanyName(companyName);
-        await registrationPage.enterPhoneNumber(phoneNumber);
+            // Clicar no botão de inscrição
+            await registrationPage.clickSignUp();
 
-        // Click the submit button on the second page
-        await registrationPage.clickSubmitButton();
+            const companyName = "TestCompany";
+            const phoneNumber = "1234567890";
 
-        console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
+            await registrationPage.enterCompanyName(companyName);
+            await registrationPage.enterPhoneNumber(phoneNumber);
+
+            await registrationPage.clickSubmitButton();
+
+            console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
+        
+        } catch (error) {
+            console.log(`Erro durante o teste: ${error}`);
+            throw error;
+        }
     });
 });

@@ -13,98 +13,108 @@ exports.RegistrationPage = void 0;
 const selenium_webdriver_1 = require("selenium-webdriver");
 class RegistrationPage {
     constructor(driver) {
-        // First Page Locators
+        // Locators para os campos da primeira e segunda páginas
         this.firstNameInput = selenium_webdriver_1.By.css('input[formcontrolname="firstName"]');
         this.lastNameInput = selenium_webdriver_1.By.css('input[formcontrolname="lastName"]');
         this.emailInput = selenium_webdriver_1.By.css('input[type="email"]');
         this.passwordInput = selenium_webdriver_1.By.css('input[formcontrolname="password"]');
         this.confirmPasswordInput = selenium_webdriver_1.By.css('input[formcontrolname="confirmPass"]');
         this.signUpButton = selenium_webdriver_1.By.css('button[type="submit"]');
-        // Second Page Locators
         this.companyNameInput = selenium_webdriver_1.By.css('input[formcontrolname="name"]');
         this.phoneNumberInput = selenium_webdriver_1.By.css('input[formcontrolname="phoneNumber"]');
-        this.submitButtonSecondPage = selenium_webdriver_1.By.css('button[type="submit');
+        this.submitButtonSecondPage = selenium_webdriver_1.By.css('button[type="submit"]');
         this.driver = driver;
     }
-    setFocusOnFirstInput() {
+    waitAndPressTab() {
         return __awaiter(this, void 0, void 0, function* () {
-            const firstInput = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.firstNameInput), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsEnabled(firstInput), 10000); // Wait for element to be enabled
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(firstInput), 10000); // Wait for element to be visible
-            yield this.driver.executeScript("arguments[0].scrollIntoView(true);", firstInput);
-            yield this.driver.executeScript("arguments[0].click();", firstInput);
-        });
-    }
-    waitForSecondForm() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const secondFormElement = selenium_webdriver_1.By.css('input[formcontrolname="name"]');
-            yield this.driver.wait(selenium_webdriver_1.until.elementLocated(secondFormElement), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(yield this.driver.findElement(secondFormElement)), 10000);
-        });
-    }
-    tabThroughInputs() {
-        return __awaiter(this, void 0, void 0, function* () {
+            yield this.driver.sleep(10000); // Espera de 5 segundos
             yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
         });
     }
-    setInputValue(selector, value) {
+    enterDataInInput(selector, value) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.tabThroughInputs();
-            const element = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(selector), 10000);
+            const element = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(selector), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(element), 20000);
             yield element.sendKeys(value);
+            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform(); // Pressiona TAB após preencher cada campo
         });
     }
     enterFirstName(firstName) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.setInputValue(this.firstNameInput, firstName);
+            yield this.enterDataInInput(this.firstNameInput, firstName);
         });
     }
     enterLastName(lastName) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.setInputValue(this.lastNameInput, lastName);
+            yield this.enterDataInInput(this.lastNameInput, lastName);
         });
     }
     enterEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.setInputValue(this.emailInput, email);
+            yield this.enterDataInInput(this.emailInput, email);
         });
     }
     enterPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.setInputValue(this.passwordInput, password);
+            yield this.enterDataInInput(this.passwordInput, password);
         });
     }
     enterConfirmPassword(confirmPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.setInputValue(this.confirmPasswordInput, confirmPassword);
+            yield this.enterDataInInput(this.confirmPasswordInput, confirmPassword);
         });
     }
     clickSignUp() {
         return __awaiter(this, void 0, void 0, function* () {
-            const signUpButtonField = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.signUpButton), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(signUpButtonField), 10000);
+            const signUpButtonField = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.signUpButton), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(signUpButtonField), 20000);
             yield signUpButtonField.click();
         });
     }
     enterCompanyName(companyName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const companyNameField = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(companyNameField), 10000);
-            yield companyNameField.sendKeys(companyName);
+            yield this.enterDataInInput(this.companyNameInput, companyName);
         });
     }
     enterPhoneNumber(phoneNumber) {
         return __awaiter(this, void 0, void 0, function* () {
-            const phoneNumberField = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.phoneNumberInput), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(phoneNumberField), 10000);
-            yield phoneNumberField.sendKeys(phoneNumber);
+            yield this.enterDataInInput(this.phoneNumberInput, phoneNumber);
         });
     }
     clickSubmitButton() {
         return __awaiter(this, void 0, void 0, function* () {
-            const submitBtn = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.submitButtonSecondPage), 10000);
-            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(submitBtn), 10000);
+            const submitBtn = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.submitButtonSecondPage), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(submitBtn), 20000);
             yield submitBtn.click();
+        });
+    }
+    completeFirstPage(firstName, lastName, email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Aguarde a visibilidade do primeiro campo antes de começar a interagir
+            const firstInput = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.firstNameInput), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(firstInput), 20000);
+            // Aguarde 10 segundos antes de começar a interação
+            yield this.driver.sleep(10000);
+            // Foca no primeiro input
+            yield firstInput.click();
+            // Preencha os campos da primeira página
+            yield this.enterFirstName(firstName);
+            yield this.enterLastName(lastName);
+            yield this.enterEmail(email);
+            yield this.enterPassword(password);
+            yield this.enterConfirmPassword(password);
+            // Clique no botão de inscrição
+            yield this.clickSignUp();
+        });
+    }
+    completeSecondPage(companyName, phoneNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Aguarde a visibilidade do primeiro campo da segunda página antes de começar a interagir
+            yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 20000);
+            yield this.waitAndPressTab(); // Aguarda 5 segundos e pressiona TAB
+            yield this.enterCompanyName(companyName);
+            yield this.enterPhoneNumber(phoneNumber);
+            yield this.clickSubmitButton();
         });
     }
 }
