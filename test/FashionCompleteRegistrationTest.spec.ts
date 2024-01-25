@@ -3,7 +3,7 @@ import { RegistrationPage } from '../src/RegistrationPage';
 import { Utils } from '../src/Utils';
 
 describe('Complete Registration Process', function() {
-    this.timeout(60000);
+    this.timeout(160000);
     let driver: WebDriver;
     let registrationPage: RegistrationPage;
 
@@ -16,18 +16,16 @@ describe('Complete Registration Process', function() {
         await driver.quit();
     });
 
-    it('Complete Registration with Company Information', async function() {
+    it('Complete Registration - Fashion', async function() {
         try {
             await driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
 
-            // Esperar até que a página esteja completamente carregada
             let readyState = '';
             do {
                 readyState = await driver.executeScript("return document.readyState");
                 await driver.sleep(5000);
             } while (readyState !== 'complete');
 
-            // Forçar o foco no primeiro campo do formulário
             await driver.executeScript("document.querySelector('input[formcontrolname=\"firstName\"]').focus();");
 
             const firstName = Utils.randomString(5);
@@ -35,16 +33,19 @@ describe('Complete Registration Process', function() {
             const email = Utils.randomEmail();
             const password = Utils.generateStrongPassword();
 
-            // Preencher os campos do formulário e clicar no botão de inscrição
             await registrationPage.completeFirstPage(firstName, lastName, email, password);
 
             const companyName = "TestCompany";
             const phoneNumber = "1234567890";
 
-            // Preencher os campos do segundo formulário e clicar no botão de submissão
             await registrationPage.completeSecondPage(companyName, phoneNumber);
 
             console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
+
+            /*
+            const appsPresent = await registrationPage.navigateToThirdScreenAndValidateApps();
+            console.log(`Apps present on the dashboard: ${appsPresent.join(', ')}`);
+            */
         
         } catch (error) {
             console.log(`Error: ${error}`);

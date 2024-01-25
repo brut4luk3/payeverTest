@@ -13,7 +13,6 @@ exports.RegistrationPage = void 0;
 const selenium_webdriver_1 = require("selenium-webdriver");
 class RegistrationPage {
     constructor(driver) {
-        // Locators para os campos da primeira e segunda páginas
         this.firstNameInput = selenium_webdriver_1.By.css('input[formcontrolname="firstName"]');
         this.lastNameInput = selenium_webdriver_1.By.css('input[formcontrolname="lastName"]');
         this.emailInput = selenium_webdriver_1.By.css('input[type="email"]');
@@ -23,11 +22,13 @@ class RegistrationPage {
         this.companyNameInput = selenium_webdriver_1.By.css('input[formcontrolname="name"]');
         this.phoneNumberInput = selenium_webdriver_1.By.css('input[formcontrolname="phoneNumber"]');
         this.submitButtonSecondPage = selenium_webdriver_1.By.css('button[type="submit"]');
+        this.vatNumberInput = selenium_webdriver_1.By.css('input[formcontrolname="vatNumber"]');
+        this.industryDropdown = selenium_webdriver_1.By.css('input[class="mat-autocomplete-trigger ng-tns-c142-11"]');
         this.driver = driver;
     }
     waitAndPressTab() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.driver.sleep(5000); // Espera de 5 segundos
+            yield this.driver.sleep(5000);
             yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
         });
     }
@@ -36,7 +37,7 @@ class RegistrationPage {
             const element = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(selector), 20000);
             yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(element), 20000);
             yield element.sendKeys(value);
-            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform(); // Pressiona TAB após preencher cada campo
+            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
         });
     }
     enterFirstName(firstName) {
@@ -90,32 +91,45 @@ class RegistrationPage {
     }
     completeFirstPage(firstName, lastName, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Aguarde a visibilidade do primeiro campo antes de começar a interagir
             const firstInput = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.firstNameInput), 10000);
             yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(firstInput), 10000);
-            // Aguarde 10 segundos antes de começar a interação
             yield this.driver.sleep(5000);
-            // Foca no primeiro input
             yield firstInput.click();
-            // Preencha os campos da primeira página
             yield this.enterFirstName(firstName);
             yield this.enterLastName(lastName);
             yield this.enterEmail(email);
             yield this.enterPassword(password);
             yield this.enterConfirmPassword(password);
-            // Clique no botão de inscrição
             yield this.clickSignUp();
         });
     }
     completeSecondPage(companyName, phoneNumber) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Aguarde a visibilidade do primeiro campo da segunda página antes de começar a interagir
             yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.companyNameInput), 10000);
-            yield this.waitAndPressTab(); // Aguarda 5 segundos e pressiona TAB
+            yield this.waitAndPressTab();
             yield this.enterCompanyName(companyName);
             yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.TAB).perform();
             yield this.enterPhoneNumber(phoneNumber);
             yield this.clickSubmitButton();
+        });
+    }
+    completeSecondPageSantander(companyName, phoneNumber, vatNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.selectFirstItemFromIndustryDropdown();
+            yield this.enterCompanyName(companyName);
+            yield this.enterPhoneNumber(phoneNumber);
+            yield this.enterDataInInput(this.vatNumberInput, vatNumber);
+            yield this.clickSubmitButton();
+        });
+    }
+    selectFirstItemFromIndustryDropdown() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const industryDropdownElement = yield this.driver.wait(selenium_webdriver_1.until.elementLocated(this.industryDropdown), 20000);
+            yield this.driver.wait(selenium_webdriver_1.until.elementIsVisible(industryDropdownElement), 20000);
+            yield industryDropdownElement.click();
+            yield this.driver.sleep(1000);
+            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.ARROW_DOWN).perform();
+            yield this.driver.actions().sendKeys(selenium_webdriver_1.Key.ENTER).perform();
         });
     }
 }

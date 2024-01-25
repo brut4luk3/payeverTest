@@ -13,7 +13,7 @@ const selenium_webdriver_1 = require("selenium-webdriver");
 const RegistrationPage_1 = require("../src/RegistrationPage");
 const Utils_1 = require("../src/Utils");
 describe('Complete Registration Process', function () {
-    this.timeout(60000);
+    this.timeout(120000);
     let driver;
     let registrationPage;
     before(function () {
@@ -27,31 +27,25 @@ describe('Complete Registration Process', function () {
             yield driver.quit();
         });
     });
-    it('Complete Registration with Company Information', function () {
+    it('Complete Registration - Santander', function () {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield driver.get('https://commerceos.staging.devpayever.com/registration/fashion');
-                // Esperar até que a página esteja completamente carregada
+                yield driver.get('https://commerceos.staging.devpayever.com/registration/santander');
                 let readyState = '';
                 do {
                     readyState = yield driver.executeScript("return document.readyState");
                     yield driver.sleep(5000);
                 } while (readyState !== 'complete');
-                // Forçar o foco no primeiro campo do formulário
-                yield driver.executeScript("document.querySelector('input[formcontrolname=\"firstName\"]').focus();");
                 const firstName = Utils_1.Utils.randomString(5);
                 const lastName = Utils_1.Utils.randomString(5);
                 const email = Utils_1.Utils.randomEmail();
                 const password = Utils_1.Utils.generateStrongPassword();
-                // Preencher os campos do formulário e clicar no botão de inscrição
                 yield registrationPage.completeFirstPage(firstName, lastName, email, password);
                 const companyName = "TestCompany";
                 const phoneNumber = "1234567890";
-                // Preencher os campos do segundo formulário e clicar no botão de submissão
-                yield registrationPage.completeSecondPage(companyName, phoneNumber);
-                console.log(`Registration successful with username: ${email}, password: ${password}, company: ${companyName}, phone: ${phoneNumber}`);
-                const appsPresent = yield registrationPage.navigateToThirdScreenAndValidateApps();
-                console.log(`Apps present on the dashboard: ${appsPresent.join(', ')}`);
+                const vatNumber = "DE123456789";
+                yield registrationPage.completeSecondPageSantander(companyName, phoneNumber, vatNumber);
+                console.log(`Registration successful with username: ${email}, password: ${password}`);
             }
             catch (error) {
                 console.log(`Error: ${error}`);
